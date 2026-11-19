@@ -1,0 +1,30 @@
+
+name: Extract Pokémon Calculus
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract project ZIP
+        run: |
+          unzip -o Pokemon_Calculus_GitHub_Upload.zip -d .
+          rm Pokemon_Calculus_GitHub_Upload.zip
+
+      - name: Save extracted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Extract Pokémon Calculus source project"
+            git push
+          fi
